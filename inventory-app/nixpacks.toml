@@ -1,5 +1,4 @@
-[providers]
-nodejs = "22"
+providers = ["node"]
 
 [phases.setup]
 nixPkgs = ["nodejs-22_x"]
