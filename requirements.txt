@@ -1,0 +1,5 @@
+qrcode[pil]
+pillow
+reportlab
+libsql-experimental
+python-dotenv
