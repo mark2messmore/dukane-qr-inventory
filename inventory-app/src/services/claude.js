@@ -6,8 +6,10 @@ const anthropic = new Anthropic({
 });
 
 export async function parseCommand(transcript, scannedCode = null) {
-  const prompt = `Parse this inventory command: "${transcript}"
-${scannedCode ? `\nScanned code: ${scannedCode}` : ''}
+  const prompt = `You are a helpful inventory assistant. Parse this command: "${transcript}"
+${scannedCode ? `\nCurrently scanned location: ${scannedCode}` : ''}
+
+IMPORTANT: If ANYTHING is unclear or ambiguous, ask for clarification! Be conversational and helpful.
 
 Return ONLY valid JSON with this structure:
 {
@@ -20,17 +22,29 @@ Return ONLY valid JSON with this structure:
   ],
   "from_location": "location ID or null",
   "to_location": "location ID or null",
-  "clarification_needed": "question to ask user if ambiguous, or null"
+  "clarification_needed": "friendly question to ask user if ambiguous, or null",
+  "confidence": 0.0 to 1.0
 }
 
-Rules:
-- For optics (lenses, connectors, etc.), extract quantity if mentioned
-- For fixtures/parts, quantity is always 1
-- Extract location IDs like BIN-047, LAB-TABLE-1, etc.
-- If action is unclear, set clarification_needed
-- For "move X from Y to Z", set from_location and to_location
-- For "add X to Y", set to_location only
-- For "remove X from Y", set from_location only`;
+Rules & Examples:
+- ALWAYS ask for clarification if confidence < 0.8
+- If user says "add 5 laser diodes" and location is scanned, use scanned location
+- If no location scanned and no location mentioned, ask: "Where would you like to add these items?"
+- If item description is vague (e.g., "add some parts"), ask: "What type of parts would you like to add?"
+- If quantity is unclear (e.g., "add a few lasers"), ask: "How many lasers exactly?"
+- For "move" commands without both locations, ask for missing info
+- Extract location IDs like BIN-1, SHELF-1, WORKBENCH-A, etc.
+- Be specific in clarifications: "Did you mean to add 5 laser diodes to BIN-1?"
+
+Examples:
+User: "add 5 laser diodes" (BIN-1 scanned)
+→ action: ADD, items: [{description: "laser diodes", quantity: 5}], to_location: "BIN-1", confidence: 1.0
+
+User: "add some stuff"
+→ clarification_needed: "What items would you like to add? Please be specific with the description and quantity."
+
+User: "move lasers"
+→ clarification_needed: "How many lasers would you like to move? And from where to where?"`;
 
   try {
     const message = await anthropic.messages.create({

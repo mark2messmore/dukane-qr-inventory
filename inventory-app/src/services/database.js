@@ -122,6 +122,38 @@ export const db = {
       args: [id]
     });
     return result.rows[0];
+  },
+
+  // Ensure location exists (create if not)
+  async ensureLocation(locationId, description = null) {
+    // Check if location exists
+    const existing = await this.getLocation(locationId);
+    if (existing) {
+      return existing;
+    }
+
+    // Determine location type from ID
+    let type = 'general';
+    if (locationId.startsWith('BIN-')) type = 'bin';
+    else if (locationId.startsWith('SHELF-')) type = 'shelf';
+    else if (locationId.startsWith('WORKBENCH-')) type = 'workbench';
+    else if (locationId.startsWith('CABINET-')) type = 'cabinet';
+    else if (locationId === 'TRASH') type = 'trash';
+
+    // Create location if it doesn't exist
+    console.log(`Creating location: ${locationId} (type: ${type})`);
+    await client.execute({
+      sql: 'INSERT INTO locations (id, description, type) VALUES (?, ?, ?)',
+      args: [locationId, description || locationId, type]
+    });
+
+    return await this.getLocation(locationId);
+  },
+
+  // Get all locations
+  async getAllLocations() {
+    const result = await client.execute('SELECT * FROM locations ORDER BY id');
+    return result.rows;
   }
 };
 
