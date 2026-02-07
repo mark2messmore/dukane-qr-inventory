@@ -1,5 +1,0 @@
-../*.py
-../generate_*.py
-../init_database.py
-../assemblyai_*.py
-../token-server/
