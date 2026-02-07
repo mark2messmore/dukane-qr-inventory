@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin 2 QR Code - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        #qrcode {
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #333;
+        }
+        .code-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f5576c;
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #d94555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏭 Dukane Inventory Test QR</h1>
+        <div class="info">
+            <p>Location Code:</p>
+            <div class="code-text">BIN-2</div>
+        </div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=BIN-2" alt="BIN-2 QR Code" style="margin: 30px auto; padding: 20px; background: white; border-radius: 10px;">
+        <button onclick="window.print()">🖨️ Print QR Code</button>
+    </div>
+</body>
+</html>

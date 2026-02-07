@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Input Debug Test</title>
+</head>
+<body>
+    <h1>Voice Input Debug Test</h1>
+    <p>Open browser console (F12) to see detailed logs</p>
+    <button id="testBtn">Test Token Endpoint</button>
+    <button id="startBtn">Start Recording</button>
+    <button id="stopBtn" disabled>Stop Recording</button>
+    <div id="status" style="margin: 20px 0; padding: 20px; background: #f0f0f0; border-radius: 8px;"></div>
+    <div id="transcript" style="margin: 20px 0; padding: 20px; background: #e0f7fa; border-radius: 8px; min-height: 100px;"></div>
+
+    <script>
+        let socket = null;
+        let stream = null;
+        let audioContext = null;
+        let workletNode = null;
+
+        const statusDiv = document.getElementById('status');
+        const transcriptDiv = document.getElementById('transcript');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const testBtn = document.getElementById('testBtn');
+
+        function updateStatus(msg) {
+            console.log('STATUS:', msg);
+            statusDiv.textContent = msg;
+        }
+
+        function updateTranscript(text) {
+            console.log('TRANSCRIPT:', text);
+            transcriptDiv.textContent = text;
+        }
+
+        testBtn.onclick = async () => {
+            try {
+                updateStatus('Testing token endpoint...');
+                const response = await fetch('http://localhost:5175/api/token');
+                const data = await response.json();
+                console.log('Token response:', data);
+                updateStatus(`Token received: ${data.token.substring(0, 50)}...`);
+            } catch (error) {
+                console.error('Token test failed:', error);
+                updateStatus(`Error: ${error.message}`);
+            }
+        };
+
+        startBtn.onclick = async () => {
+            try {
+                updateStatus('Getting token...');
+                console.log('🎬 Starting recording...');
+
+                // Get token
+                const tokenResponse = await fetch('http://localhost:5175/api/token');
+                const { token } = await tokenResponse.json();
+                console.log('✅ Token received');
+
+                updateStatus('Connecting to AssemblyAI...');
+                console.log('🔌 Connecting to WebSocket...');
+
+                // Connect to WebSocket
+                const wsUrl = `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&formatted_finals=true&token=${token}`;
+                socket = new WebSocket(wsUrl);
+
+                socket.onopen = async () => {
+                    console.log('✅ WebSocket connected');
+                    updateStatus('Getting microphone...');
+
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia({
+                            audio: { channelCount: 1, sampleRate: 16000 }
+                        });
+                        console.log('🎤 Microphone access granted');
+
+                        audioContext = new AudioContext({ sampleRate: 16000 });
+                        await audioContext.audioWorklet.addModule('/audio-processor.js');
+                        console.log('🔧 AudioWorklet loaded');
+
+                        const source = audioContext.createMediaStreamSource(stream);
+                        workletNode = new AudioWorkletNode(audioContext, 'audio-processor');
+
+                        let audioBufferQueue = new Int16Array(0);
+
+                        workletNode.port.onmessage = (event) => {
+                            if (socket.readyState !== WebSocket.OPEN) return;
+
+                            const currentBuffer = new Int16Array(event.data.audio_data);
+                            const merged = new Int16Array(audioBufferQueue.length + currentBuffer.length);
+                            merged.set(audioBufferQueue, 0);
+                            merged.set(currentBuffer, audioBufferQueue.length);
+                            audioBufferQueue = merged;
+
+                            const bufferDuration = (audioBufferQueue.length / audioContext.sampleRate) * 1000;
+
+                            if (bufferDuration >= 100) {
+                                const totalSamples = Math.floor(audioContext.sampleRate * 0.1);
+                                const finalBuffer = new Uint8Array(audioBufferQueue.subarray(0, totalSamples).buffer);
+                                audioBufferQueue = audioBufferQueue.subarray(totalSamples);
+                                socket.send(finalBuffer);
+                                console.log('🎵 Sent audio chunk');
+                            }
+                        };
+
+                        source.connect(workletNode);
+                        workletNode.connect(audioContext.destination);
+
+                        updateStatus('🎙️ LISTENING - Speak now!');
+                        startBtn.disabled = true;
+                        stopBtn.disabled = false;
+                    } catch (err) {
+                        console.error('❌ Microphone error:', err);
+                        updateStatus('Microphone access denied');
+                        socket.close();
+                    }
+                };
+
+                socket.onmessage = (event) => {
+                    const message = JSON.parse(event.data);
+                    console.log('📩 Received:', message);
+
+                    if (message.type === 'FinalTranscript') {
+                        console.log('✅ Final:', message.text);
+                        updateTranscript(transcriptDiv.textContent + ' ' + message.text);
+                    } else if (message.type === 'PartialTranscript') {
+                        console.log('⏳ Partial:', message.text);
+                        updateTranscript(transcriptDiv.textContent + ' [' + message.text + ']');
+                    } else if (message.type === 'SessionBegins') {
+                        console.log('🎙️ Session started');
+                    }
+                };
+
+                socket.onerror = (error) => {
+                    console.error('❌ WebSocket error:', error);
+                    updateStatus('Connection error');
+                };
+
+                socket.onclose = () => {
+                    console.log('🔌 WebSocket closed');
+                    updateStatus('Ready');
+                };
+
+            } catch (error) {
+                console.error('❌ Failed to start:', error);
+                updateStatus(`Error: ${error.message}`);
+            }
+        };
+
+        stopBtn.onclick = () => {
+            if (workletNode) workletNode.disconnect();
+            if (audioContext) audioContext.close();
+            if (stream) stream.getTracks().forEach(track => track.stop());
+            if (socket) {
+                socket.send(JSON.stringify({ type: 'Terminate' }));
+                socket.close();
+            }
+            updateStatus('Stopped');
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        };
+    </script>
+</body>
+</html>

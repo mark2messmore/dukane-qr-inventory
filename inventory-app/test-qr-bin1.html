@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin 1 QR Code - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        #qrcode {
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #333;
+        }
+        .code-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        .instructions {
+            margin-top: 20px;
+            text-align: left;
+            color: #555;
+            line-height: 1.6;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏭 Dukane Inventory Test QR</h1>
+
+        <div class="info">
+            <p>Location Code:</p>
+            <div class="code-text">BIN-1</div>
+        </div>
+
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=BIN-1" alt="BIN-1 QR Code">
+
+        <div class="instructions">
+            <h3>How to Test:</h3>
+            <ol>
+                <li>Open your deployed app: <a href="https://dukane-qr-inventory-production.up.railway.app" target="_blank">dukane-qr-inventory-production.up.railway.app</a></li>
+                <li>Click "📷 Scan QR Code"</li>
+                <li>Point your camera at the QR code above</li>
+                <li>Once scanned, use voice commands like:
+                    <ul>
+                        <li>"Add 5 laser diodes to bin 1"</li>
+                        <li>"Add 10 screws"</li>
+                        <li>"Remove 2 laser diodes"</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <button onclick="window.print()">🖨️ Print QR Code</button>
+    </div>
+</body>
+</html>

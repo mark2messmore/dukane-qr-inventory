@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dukane QR Test Codes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .header p {
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .qr-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .qr-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .qr-card h2 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .qr-card .location-code {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0 20px 0;
+        }
+        .qr-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .instructions {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 1200px;
+            margin: 40px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .instructions h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .instructions ol {
+            line-height: 2;
+        }
+        .instructions code {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        .app-link {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: background 0.2s;
+        }
+        .app-link:hover {
+            background: #218838;
+        }
+        .print-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .print-btn:hover {
+            background: #5568d3;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .instructions, .print-btn, .app-link {
+                display: none;
+            }
+            .qr-card {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 2px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏭 Dukane QR Code Testing Suite</h1>
+        <p>Test QR codes for your inventory system</p>
+        <a href="https://dukane-qr-inventory-production.up.railway.app" target="_blank" class="app-link">
+            🚀 Open Live App
+        </a>
+    </div>
+
+    <div class="grid">
+        <div class="qr-card">
+            <h2>Storage Location</h2>
+            <div class="location-code">BIN-1</div>
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BIN-1" alt="BIN-1 QR Code">
+            </div>
+        </div>
+
+        <div class="qr-card">
+            <h2>Storage Location</h2>
+            <div class="location-code">BIN-2</div>
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BIN-2" alt="BIN-2 QR Code">
+            </div>
+        </div>
+
+        <div class="qr-card">
+            <h2>Work Area</h2>
+            <div class="location-code">WORKBENCH-A</div>
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=WORKBENCH-A" alt="WORKBENCH-A QR Code">
+            </div>
+        </div>
+
+        <div class="qr-card">
+            <h2>Storage Location</h2>
+            <div class="location-code">SHELF-1</div>
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SHELF-1" alt="SHELF-1 QR Code">
+            </div>
+        </div>
+
+        <div class="qr-card">
+            <h2>Storage Location</h2>
+            <div class="location-code">CABINET-A</div>
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CABINET-A" alt="CABINET-A QR Code">
+            </div>
+        </div>
+
+        <div class="qr-card">
+            <h2>Disposal Area</h2>
+            <div class="location-code">TRASH</div>
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TRASH" alt="TRASH QR Code">
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h2>📋 How to Test Your App</h2>
+        <ol>
+            <li>Open the app: <a href="https://dukane-qr-inventory-production.up.railway.app" target="_blank">dukane-qr-inventory-production.up.railway.app</a></li>
+            <li>Click the <strong>"📷 Scan QR Code"</strong> button</li>
+            <li>Point your camera at one of the QR codes above (or print them out)</li>
+            <li>Once scanned, try these voice commands:</li>
+        </ol>
+
+        <h3>Example Voice Commands:</h3>
+        <ul>
+            <li><code>"Add 5 laser diodes"</code> - Adds 5 laser diodes to the scanned location</li>
+            <li><code>"Add 10 screws and 3 capacitors"</code> - Adds multiple items</li>
+            <li><code>"Remove 2 laser diodes"</code> - Removes items from scanned location</li>
+            <li><code>"Move 3 laser diodes from bin 1 to workbench A"</code> - Moves items between locations</li>
+            <li><code>"Search for laser"</code> - Searches inventory</li>
+        </ul>
+
+        <h3>Testing Workflow:</h3>
+        <ol>
+            <li>Scan <code>BIN-1</code> QR code</li>
+            <li>Say: <code>"Add 5 laser diodes"</code></li>
+            <li>Scan <code>WORKBENCH-A</code> QR code</li>
+            <li>Say: <code>"Move 2 laser diodes from bin 1 to workbench A"</code></li>
+            <li>Check the "Recent Activity" section to verify the moves</li>
+        </ol>
+
+        <button class="print-btn" onclick="window.print()">🖨️ Print All QR Codes</button>
+    </div>
+
+</body>
+</html>
