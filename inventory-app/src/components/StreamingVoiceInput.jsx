@@ -224,7 +224,7 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
   }, []);
 
   return (
-    <div style={{ margin: '20px 0' }}>
+    <div style={{ margin: '0' }}>
       {/* MAIN BUTTON */}
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
         <button
@@ -233,19 +233,19 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
           style={{
             padding: '24px 48px',
             fontSize: '20px',
-            backgroundColor: isRecording ? '#dc3545' : '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '50px',
+            backgroundColor: isRecording ? '#5d2a2e' : '#2d2d2d',
+            color: '#e0e0e0',
+            border: `2px solid ${isRecording ? '#ff5252' : '#404040'}`,
+            borderRadius: '12px',
             cursor: status === 'Processing...' ? 'not-allowed' : 'pointer',
             minWidth: '250px',
             fontWeight: 'bold',
             opacity: status === 'Processing...' ? 0.6 : 1,
-            boxShadow: isRecording ? '0 0 20px rgba(220, 53, 69, 0.5)' : '0 4px 12px rgba(0,0,0,0.15)',
+            boxShadow: isRecording ? '0 0 20px rgba(255, 82, 82, 0.5)' : '0 4px 12px rgba(0,0,0,0.3)',
             transition: 'all 0.3s ease'
           }}
         >
-          {isRecording ? '⏹️ DONE TALKING' : '🎤 START TALKING'}
+          {isRecording ? 'DONE TALKING' : 'START TALKING'}
         </button>
 
         {/* STATUS INDICATOR */}
@@ -253,7 +253,7 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
           marginTop: '15px',
           fontSize: '16px',
           fontWeight: '600',
-          color: isRecording ? '#dc3545' : status === 'Processing...' ? '#ffc107' : '#6c757d'
+          color: isRecording ? '#ff8a9a' : status === 'Processing...' ? '#ffd700' : '#b0b0b0'
         }}>
           {status}
         </div>
@@ -262,12 +262,12 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
       {/* LIVE TRANSCRIPT BOX - ALWAYS VISIBLE */}
       <div style={{
         padding: '24px',
-        backgroundColor: isRecording ? '#fff3cd' : transcript ? '#d4edda' : '#f8f9fa',
-        borderRadius: '16px',
-        border: `3px solid ${isRecording ? '#ffc107' : transcript ? '#28a745' : '#dee2e6'}`,
+        backgroundColor: isRecording ? '#3d3a2a' : transcript ? '#2a3d2e' : '#2d2d2d',
+        borderRadius: '12px',
+        border: `1px solid ${isRecording ? '#ffd700' : transcript ? '#4caf50' : '#404040'}`,
         minHeight: '150px',
         textAlign: 'left',
-        boxShadow: isRecording ? '0 0 20px rgba(255, 193, 7, 0.3)' : 'none',
+        boxShadow: isRecording ? '0 0 20px rgba(255, 215, 0, 0.3)' : 'none',
         transition: 'all 0.3s ease'
       }}>
         {/* HEADER */}
@@ -277,23 +277,23 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
           justifyContent: 'space-between',
           marginBottom: '16px',
           paddingBottom: '12px',
-          borderBottom: '2px solid rgba(0,0,0,0.1)'
+          borderBottom: '1px solid #404040'
         }}>
           <div style={{
             fontSize: '14px',
             fontWeight: 'bold',
             textTransform: 'uppercase',
             letterSpacing: '1px',
-            color: isRecording ? '#856404' : transcript ? '#155724' : '#6c757d'
+            color: isRecording ? '#ffd700' : transcript ? '#8aff9a' : '#b0b0b0'
           }}>
-            {isRecording ? '🔴 LISTENING - SPEAK NOW' : transcript ? '✅ TRANSCRIPT CAPTURED' : '⏸️ READY TO RECORD'}
+            {isRecording ? 'LISTENING - SPEAK NOW' : transcript ? 'TRANSCRIPT CAPTURED' : 'READY TO RECORD'}
           </div>
           {isRecording && (
             <div style={{
               width: '12px',
               height: '12px',
               borderRadius: '50%',
-              backgroundColor: '#dc3545',
+              backgroundColor: '#ff5252',
               animation: 'pulse 1.5s infinite'
             }} />
           )}
@@ -302,7 +302,7 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
         {/* TRANSCRIPT TEXT */}
         <div style={{
           fontSize: '18px',
-          color: '#212529',
+          color: '#e0e0e0',
           lineHeight: '1.8',
           minHeight: '60px',
           fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -311,7 +311,7 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
         }}>
           {transcript && <span style={{ fontWeight: '600' }}>{transcript}</span>}
           {partialTranscript && (
-            <span style={{ color: '#6c757d', fontStyle: 'italic' }}>
+            <span style={{ color: '#b0b0b0', fontStyle: 'italic' }}>
               {transcript ? ' ' : ''}{partialTranscript}
             </span>
           )}
@@ -325,7 +325,7 @@ export default function StreamingVoiceInput({ onTranscriptComplete, scannedCode,
           <div style={{
             marginTop: '12px',
             fontSize: '12px',
-            color: '#6c757d',
+            color: '#b0b0b0',
             textAlign: 'right'
           }}>
             {transcript.split(' ').length} words

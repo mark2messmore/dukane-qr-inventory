@@ -346,33 +346,34 @@ function App() {
         />
       )}
 
-      <header>
-        <h1>🏭 Dukane Inventory</h1>
+      <header style={{ marginBottom: '40px', paddingBottom: '20px', borderBottom: '2px solid #404040' }}>
+        <h1 style={{ fontSize: '1.8em', color: '#ffd700', margin: '0' }}>Dukane Inventory</h1>
       </header>
 
-      <main style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <main style={{ padding: '20px 40px', maxWidth: '900px', margin: '0 auto' }}>
         {scannedCode && (
           <div style={{
-            padding: '15px',
-            backgroundColor: '#d4edda',
-            border: '2px solid #c3e6cb',
+            padding: '20px',
+            backgroundColor: '#2d2d2d',
+            border: '1px solid #404040',
             borderRadius: '12px',
-            marginBottom: '20px',
+            marginBottom: '40px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between'
           }}>
-            <div>
-              <strong>📍 Scanned Location:</strong> {scannedCode}
+            <div style={{ color: '#e0e0e0', fontSize: '16px' }}>
+              <strong>Scanned Location:</strong> {scannedCode}
             </div>
             <button
               onClick={() => setScannedCode(null)}
               style={{
                 background: 'none',
                 border: 'none',
-                fontSize: '20px',
+                fontSize: '24px',
                 cursor: 'pointer',
-                color: '#155724'
+                color: '#e0e0e0',
+                padding: '0 8px'
               }}
             >
               ×
@@ -383,18 +384,18 @@ function App() {
         {/* CLAUDE STATUS DISPLAY */}
         {claudeStatus && (
           <div style={{
-            padding: '20px',
-            backgroundColor: claudeStatus.step === 'error' ? '#f8d7da' :
-                           claudeStatus.step === 'complete' ? '#d4edda' :
-                           claudeStatus.step === 'needs_clarification' ? '#fff3cd' :
-                           '#d1ecf1',
-            border: `3px solid ${claudeStatus.step === 'error' ? '#f5c6cb' :
-                                claudeStatus.step === 'complete' ? '#c3e6cb' :
-                                claudeStatus.step === 'needs_clarification' ? '#ffeaa7' :
-                                '#bee5eb'}`,
-            borderRadius: '16px',
-            marginBottom: '20px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            padding: '24px',
+            backgroundColor: claudeStatus.step === 'error' ? '#3d2a2e' :
+                           claudeStatus.step === 'complete' ? '#2a3d2e' :
+                           claudeStatus.step === 'needs_clarification' ? '#3d3a2a' :
+                           '#2a3a3d',
+            border: `1px solid ${claudeStatus.step === 'error' ? '#5d4a4e' :
+                                claudeStatus.step === 'complete' ? '#4a5d4e' :
+                                claudeStatus.step === 'needs_clarification' ? '#5d5a4a' :
+                                '#4a5a5d'}`,
+            borderRadius: '12px',
+            marginBottom: '40px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
           }}>
             <div style={{
               display: 'flex',
@@ -403,25 +404,14 @@ function App() {
               marginBottom: '8px'
             }}>
               <div style={{
-                fontSize: '24px'
-              }}>
-                {claudeStatus.step === 'received' && '📩'}
-                {claudeStatus.step === 'thinking' && '🤔'}
-                {claudeStatus.step === 'responded' && '💬'}
-                {claudeStatus.step === 'executing' && '⚙️'}
-                {claudeStatus.step === 'complete' && '✅'}
-                {claudeStatus.step === 'needs_clarification' && '❓'}
-                {claudeStatus.step === 'error' && '❌'}
-              </div>
-              <div style={{
                 fontSize: '12px',
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
-                color: claudeStatus.step === 'error' ? '#721c24' :
-                       claudeStatus.step === 'complete' ? '#155724' :
-                       claudeStatus.step === 'needs_clarification' ? '#856404' :
-                       '#0c5460'
+                color: claudeStatus.step === 'error' ? '#ff8a9a' :
+                       claudeStatus.step === 'complete' ? '#8aff9a' :
+                       claudeStatus.step === 'needs_clarification' ? '#ffd98a' :
+                       '#8ad9ff'
               }}>
                 {claudeStatus.step === 'received' && 'RECEIVED'}
                 {claudeStatus.step === 'thinking' && 'THINKING...'}
@@ -435,7 +425,7 @@ function App() {
             <div style={{
               fontSize: '16px',
               lineHeight: '1.6',
-              color: '#212529',
+              color: '#e0e0e0',
               fontWeight: '500'
             }}>
               {claudeStatus.message}
@@ -443,60 +433,174 @@ function App() {
           </div>
         )}
 
-        <div style={{ display: 'grid', gap: '15px', marginBottom: '30px' }}>
-          <button onClick={() => setShowScanner(true)} style={{ padding: '20px', fontSize: '18px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold' }}>
-            📷 Scan QR Code
+        {/* ACTIONS SECTION */}
+        <div style={{
+          backgroundColor: '#252525',
+          padding: '30px',
+          borderRadius: '12px',
+          marginBottom: '50px',
+          border: '1px solid #404040'
+        }}>
+          <h2 style={{
+            color: '#ffd700',
+            fontSize: '1.3em',
+            marginTop: '0',
+            marginBottom: '25px',
+            fontWeight: '600'
+          }}>Actions</h2>
+
+          <div style={{ display: 'grid', gap: '20px' }}>
+            <button onClick={() => setShowScanner(true)} style={{ padding: '20px', fontSize: '18px', backgroundColor: '#2d2d2d', color: '#e0e0e0', border: '1px solid #404040', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold' }}>
+              Scan QR Code
+            </button>
+
+            <StreamingVoiceInput
+              onTranscriptComplete={handleVoiceCommand}
+              scannedCode={scannedCode}
+              deviceId={selectedMicDevice}
+            />
+
+            <button onClick={handleUndo} style={{ padding: '15px', fontSize: '16px', backgroundColor: '#2d2d2d', color: '#e0e0e0', border: '1px solid #404040', borderRadius: '12px', cursor: 'pointer' }}>
+              Undo Last
+            </button>
+          </div>
+        </div>
+
+        {/* SEARCH SECTION */}
+        <div style={{
+          backgroundColor: '#252525',
+          padding: '30px',
+          borderRadius: '12px',
+          marginBottom: '50px',
+          border: '1px solid #404040'
+        }}>
+          <h2 style={{
+            color: '#ffd700',
+            fontSize: '1.3em',
+            marginTop: '0',
+            marginBottom: '25px',
+            fontWeight: '600'
+          }}>Search Inventory</h2>
+
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search for items..."
+            style={{
+              width: '100%',
+              padding: '15px',
+              fontSize: '16px',
+              borderRadius: '8px',
+              border: '1px solid #404040',
+              backgroundColor: '#2d2d2d',
+              color: '#e0e0e0',
+              marginBottom: '15px'
+            }}
+          />
+
+          <button
+            onClick={() => handleSearch({ items: [{ description: searchQuery }] })}
+            style={{
+              padding: '12px 30px',
+              backgroundColor: '#2d2d2d',
+              color: '#e0e0e0',
+              border: '1px solid #404040',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              fontSize: '16px'
+            }}
+          >
+            Search
           </button>
+
+          {searchResults.length > 0 && (
+            <div style={{ marginTop: '30px', paddingTop: '30px', borderTop: '1px solid #404040' }}>
+              <h3 style={{ color: '#e0e0e0', marginBottom: '20px', fontSize: '1.1em' }}>Results</h3>
+              <div style={{ display: 'grid', gap: '15px' }}>
+                {searchResults.map(item => (
+                  <div key={item.id} style={{
+                    padding: '18px',
+                    backgroundColor: '#2d2d2d',
+                    border: '1px solid #404040',
+                    borderRadius: '8px',
+                    color: '#e0e0e0'
+                  }}>
+                    <strong style={{ fontSize: '16px' }}>{item.description}</strong>
+                    {item.quantity && <span style={{ marginLeft: '10px', color: '#b0b0b0' }}>(Qty: {item.quantity})</span>}
+                    <br />
+                    <small style={{ color: '#b0b0b0', marginTop: '8px', display: 'inline-block' }}>
+                      Location: {item.location_description || item.current_location_id}
+                    </small>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* SETTINGS SECTION */}
+        <div style={{
+          backgroundColor: '#252525',
+          padding: '30px',
+          borderRadius: '12px',
+          marginBottom: '50px',
+          border: '1px solid #404040'
+        }}>
+          <h2 style={{
+            color: '#ffd700',
+            fontSize: '1.3em',
+            marginTop: '0',
+            marginBottom: '25px',
+            fontWeight: '600'
+          }}>Settings</h2>
 
           <MicrophoneSelector
             onDeviceChange={setSelectedMicDevice}
             isRecording={loading}
           />
-
-          <StreamingVoiceInput
-            onTranscriptComplete={handleVoiceCommand}
-            scannedCode={scannedCode}
-            deviceId={selectedMicDevice}
-          />
-
-          <button onClick={handleUndo} style={{ padding: '15px', fontSize: '16px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
-            ↩️ Undo Last
-          </button>
         </div>
 
-        <div style={{ marginBottom: '30px' }}>
-          <h3>Search Inventory</h3>
-          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search for items..." style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '8px', border: '1px solid #ddd' }} />
-          <button onClick={() => handleSearch({ items: [{ description: searchQuery }] })} style={{ marginTop: '10px', padding: '12px 24px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
-            Search
-          </button>
+        {/* RECENT ACTIVITY SECTION */}
+        <div style={{
+          backgroundColor: '#252525',
+          padding: '30px',
+          borderRadius: '12px',
+          marginBottom: '50px',
+          border: '1px solid #404040'
+        }}>
+          <h2 style={{
+            color: '#ffd700',
+            fontSize: '1.3em',
+            marginTop: '0',
+            marginBottom: '25px',
+            fontWeight: '600'
+          }}>Recent Activity</h2>
 
-          {searchResults.length > 0 && (
-            <div style={{ marginTop: '20px' }}>
-              <h4>Results:</h4>
-              {searchResults.map(item => (
-                <div key={item.id} style={{ padding: '12px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', marginBottom: '10px' }}>
-                  <strong>{item.description}</strong>
-                  {item.quantity && <span> (Qty: {item.quantity})</span>}
+          {recentMovements.length > 0 ? (
+            <div style={{ display: 'grid', gap: '15px' }}>
+              {recentMovements.map((movement, idx) => (
+                <div key={idx} style={{
+                  padding: '18px',
+                  backgroundColor: '#2d2d2d',
+                  border: '1px solid #404040',
+                  borderRadius: '8px',
+                  fontSize: '15px',
+                  color: '#e0e0e0'
+                }}>
+                  <strong>{movement.action}:</strong> {movement.item_description || movement.item_id}
+                  {movement.from_location_id && ` from ${movement.from_location_id}`}
+                  {movement.to_location_id && ` to ${movement.to_location_id}`}
                   <br />
-                  <small>Location: {item.location_description || item.current_location_id}</small>
+                  <small style={{ color: '#b0b0b0', marginTop: '8px', display: 'inline-block' }}>
+                    {new Date(movement.timestamp * 1000).toLocaleString()}
+                  </small>
                 </div>
               ))}
             </div>
+          ) : (
+            <p style={{ color: '#b0b0b0', margin: '0' }}>No recent activity</p>
           )}
-        </div>
-
-        <div>
-          <h3>Recent Activity</h3>
-          {recentMovements.map((movement, idx) => (
-            <div key={idx} style={{ padding: '10px', backgroundColor: '#f8f9fa', borderRadius: '8px', marginBottom: '8px', fontSize: '14px' }}>
-              <strong>{movement.action}:</strong> {movement.item_description || movement.item_id}
-              {movement.from_location_id && ` from ${movement.from_location_id}`}
-              {movement.to_location_id && ` to ${movement.to_location_id}`}
-              <br />
-              <small>{new Date(movement.timestamp * 1000).toLocaleString()}</small>
-            </div>
-          ))}
         </div>
       </main>
 
@@ -509,7 +613,7 @@ function App() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: 'rgba(0,0,0,0.8)',
           zIndex: 9998,
           display: 'flex',
           alignItems: 'center',
@@ -517,21 +621,22 @@ function App() {
         }}>
           <div style={{
             padding: '30px 40px',
-            backgroundColor: 'white',
+            backgroundColor: '#2d2d2d',
+            border: '1px solid #404040',
             borderRadius: '16px',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
             textAlign: 'center'
           }}>
             <div style={{
               width: '50px',
               height: '50px',
-              border: '5px solid #f3f3f3',
-              borderTop: '5px solid #007bff',
+              border: '5px solid #404040',
+              borderTop: '5px solid #ffd700',
               borderRadius: '50%',
               animation: 'spin 1s linear infinite',
               margin: '0 auto 15px'
             }}></div>
-            <div style={{ fontSize: '18px', fontWeight: '500', color: '#333' }}>
+            <div style={{ fontSize: '18px', fontWeight: '500', color: '#e0e0e0' }}>
               Processing...
             </div>
           </div>

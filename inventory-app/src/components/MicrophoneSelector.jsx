@@ -76,21 +76,17 @@ export default function MicrophoneSelector({ onDeviceChange, isRecording }) {
 
   return (
     <div style={{
-      padding: '20px',
-      backgroundColor: '#f8f9fa',
-      borderRadius: '12px',
-      marginBottom: '20px',
-      border: '2px solid #dee2e6'
+      padding: '0'
     }}>
-      <div style={{ marginBottom: '15px' }}>
+      <div style={{ marginBottom: '20px' }}>
         <label style={{
           display: 'block',
-          fontSize: '14px',
+          fontSize: '15px',
           fontWeight: 'bold',
-          marginBottom: '8px',
-          color: '#495057'
+          marginBottom: '12px',
+          color: '#e0e0e0'
         }}>
-          🎤 Select Microphone:
+          Select Microphone
         </label>
         <select
           value={selectedDevice}
@@ -98,11 +94,12 @@ export default function MicrophoneSelector({ onDeviceChange, isRecording }) {
           disabled={isRecording}
           style={{
             width: '100%',
-            padding: '10px',
-            fontSize: '14px',
-            borderRadius: '6px',
-            border: '2px solid #ced4da',
-            backgroundColor: isRecording ? '#e9ecef' : 'white',
+            padding: '12px',
+            fontSize: '15px',
+            borderRadius: '8px',
+            border: '1px solid #404040',
+            backgroundColor: isRecording ? '#3d3d3d' : '#1a1a1a',
+            color: '#e0e0e0',
             cursor: isRecording ? 'not-allowed' : 'pointer'
           }}
         >
@@ -118,18 +115,18 @@ export default function MicrophoneSelector({ onDeviceChange, isRecording }) {
         onClick={testAudio}
         disabled={isRecording || !selectedDevice}
         style={{
-          padding: '8px 16px',
-          fontSize: '14px',
-          backgroundColor: isRecording ? '#6c757d' : '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '6px',
+          padding: '12px 20px',
+          fontSize: '15px',
+          backgroundColor: isRecording || !selectedDevice ? '#3d3d3d' : '#2d2d2d',
+          color: isRecording || !selectedDevice ? '#808080' : '#e0e0e0',
+          border: '1px solid #404040',
+          borderRadius: '8px',
           cursor: isRecording || !selectedDevice ? 'not-allowed' : 'pointer',
           opacity: isRecording || !selectedDevice ? 0.5 : 1,
-          marginBottom: '10px'
+          marginBottom: '15px'
         }}
       >
-        🔊 Test Microphone (3 seconds)
+        Test Microphone (3 seconds)
       </button>
 
       {/* Audio Level Indicator */}
@@ -139,21 +136,22 @@ export default function MicrophoneSelector({ onDeviceChange, isRecording }) {
             fontSize: '12px',
             fontWeight: 'bold',
             marginBottom: '5px',
-            color: '#495057'
+            color: '#e0e0e0'
           }}>
             Audio Level: {Math.round(audioLevel)}
           </div>
           <div style={{
             width: '100%',
             height: '20px',
-            backgroundColor: '#e9ecef',
+            backgroundColor: '#1a1a1a',
             borderRadius: '10px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            border: '1px solid #404040'
           }}>
             <div style={{
               width: `${Math.min(100, audioLevel)}%`,
               height: '100%',
-              backgroundColor: audioLevel > 50 ? '#28a745' : audioLevel > 20 ? '#ffc107' : '#dc3545',
+              backgroundColor: audioLevel > 50 ? '#4caf50' : audioLevel > 20 ? '#ffd700' : '#ff5252',
               transition: 'width 0.1s ease'
             }} />
           </div>
@@ -163,9 +161,9 @@ export default function MicrophoneSelector({ onDeviceChange, isRecording }) {
       <div style={{
         marginTop: '10px',
         fontSize: '12px',
-        color: '#6c757d'
+        color: '#b0b0b0'
       }}>
-        💡 Tip: Speak normally and watch the audio level bar when testing
+        Tip: Speak normally and watch the audio level bar when testing
       </div>
     </div>
   );
