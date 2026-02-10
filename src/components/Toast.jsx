@@ -9,10 +9,10 @@ export default function Toast({ message, type = 'info', onClose, duration = 5000
   }, [duration, onClose]);
 
   const colors = {
-    success: { bg: '#d4edda', border: '#c3e6cb', text: '#155724' },
-    error: { bg: '#f8d7da', border: '#f5c6cb', text: '#721c24' },
-    warning: { bg: '#fff3cd', border: '#ffeaa7', text: '#856404' },
-    info: { bg: '#d1ecf1', border: '#bee5eb', text: '#0c5460' }
+    success: { bg: '#2a3d2e', border: '#4a5d4e', text: '#8aff9a' },
+    error: { bg: '#3d2a2e', border: '#5d4a4e', text: '#ff8a9a' },
+    warning: { bg: '#3d3a2a', border: '#5d5a4a', text: '#ffd98a' },
+    info: { bg: '#2a3a3d', border: '#4a5a5d', text: '#8ad9ff' }
   };
 
   const color = colors[type] || colors.info;
@@ -34,10 +34,10 @@ export default function Toast({ message, type = 'info', onClose, duration = 5000
         style={{
           backgroundColor: color.bg,
           color: color.text,
-          border: `2px solid ${color.border}`,
+          border: `1px solid ${color.border}`,
           borderRadius: '12px',
           padding: '16px 20px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
